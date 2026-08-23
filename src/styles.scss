@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  /* Paleta de marca (Adm Hope) — mesmos tokens do software-license-web */
+  --color-primary: #27394f;
+  --color-primary-hover: #1f2e40;
+  --color-secondary: #596676;
+  --color-tertiary: #526c68;
+  --color-accent: #e1744f;
+  --color-accent-hover: #bf6343;
+
+  --color-primary-tint: #e9ebed;
+  --color-primary-tint-border: #c9ced3;
+  --color-tertiary-tint: #d4dad9;
+
+  --color-text: #606060;
+  --color-text-muted: #999999;
+  --color-border: #b7b7b9;
+  --color-border-light: #dddfe2;
+
+  --color-bg-page: #f3f4f5;
+  --color-bg-subtle: #f8f9f9;
+  --color-bg-card: #ffffff;
+
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: #dddfe2;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family: system-ui, sans-serif;
+  background: var(--color-bg-page);
+  color: var(--color-text);
+}
+
+* {
+  box-sizing: border-box;
+}
