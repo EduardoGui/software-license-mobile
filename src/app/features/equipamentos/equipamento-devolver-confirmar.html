@@ -1,0 +1,42 @@
+<section class="acao-page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <h1>Devolver equipamento</h1>
+
+  @if (sucesso()) {
+    <div class="cartao-sucesso">
+      <p class="cartao-sucesso__titulo">Equipamento devolvido com sucesso!</p>
+      <a routerLink="/home" class="botao botao--primario">Voltar ao início</a>
+    </div>
+  } @else {
+    @if (contexto.equipamentoDescricao || contexto.usuarioNome) {
+      <div class="cartao-item">
+        @if (contexto.equipamentoDescricao) {
+          <span class="cartao-item__titulo">{{ contexto.equipamentoDescricao }}</span>
+        }
+        @if (contexto.usuarioNome) {
+          <span class="cartao-item__detalhe">Com: {{ contexto.usuarioNome }}</span>
+        }
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      @if (erro()) {
+        <p class="status status--erro">{{ erro() }}</p>
+      }
+
+      <label>
+        Data de devolução *
+        <input type="date" formControlName="dataFim" />
+      </label>
+
+      <label>
+        Observação
+        <textarea formControlName="observacao" rows="2"></textarea>
+      </label>
+
+      <button type="submit" class="botao botao--primario" [disabled]="salvando()">
+        {{ salvando() ? 'Devolvendo...' : 'Confirmar devolução' }}
+      </button>
+    </form>
+  }
+</section>
