@@ -1,7 +1,7 @@
 {
-  "name": "Adm Hope - Equipamentos",
-  "short_name": "Equipamentos",
-  "description": "Movimentação de equipamentos de TI da Adm Hope",
+  "name": "Adm Hope",
+  "short_name": "Adm Hope",
+  "description": "Meus dados, reembolsos e aprovações da Adm Hope",
   "display": "standalone",
   "theme_color": "#27394F",
   "background_color": "#27394F",
