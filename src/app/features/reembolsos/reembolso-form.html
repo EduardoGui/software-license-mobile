@@ -1,0 +1,91 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <h1>{{ editando ? 'Editar reembolso' : 'Novo reembolso' }}</h1>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      @if (erro()) {
+        <p class="status status--erro">{{ erro() }}</p>
+      }
+
+      <label>
+        Finalidade *
+        <input type="text" formControlName="finalidade" />
+      </label>
+
+      <label>
+        Forma de pagamento
+        <input type="text" formControlName="formaPagamento" />
+      </label>
+
+      <label>
+        Local
+        <select formControlName="localId">
+          <option [ngValue]="null">Não informado</option>
+          @for (local of locais(); track local.id) {
+            <option [ngValue]="local.id">{{ local.nome }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Observação
+        <textarea formControlName="observacao" rows="2"></textarea>
+      </label>
+
+      <h2>Itens</h2>
+      <div class="lista" formArrayName="itens">
+        @for (item of itens.controls; track $index) {
+          <div class="cartao-item" [formGroupName]="$index">
+            <label>
+              Data *
+              <input type="date" formControlName="data" />
+            </label>
+
+            <label>
+              Tipo de despesa *
+              <select formControlName="tipoDespesaId">
+                <option [ngValue]="null">Selecione...</option>
+                @for (tipo of tiposDespesa(); track tipo.id) {
+                  <option [ngValue]="tipo.id">{{ tipo.nome }}</option>
+                }
+              </select>
+            </label>
+
+            <label>
+              Descrição
+              <input type="text" formControlName="descricao" />
+            </label>
+
+            <label>
+              Número do documento
+              <input type="text" formControlName="numeroDocumento" />
+            </label>
+
+            <label>
+              Valor *
+              <input type="number" min="0.01" step="0.01" formControlName="valor" />
+            </label>
+
+            @if (itens.length > 1) {
+              <button type="button" class="botao botao--texto" (click)="removerItem($index)">Remover item</button>
+            }
+          </div>
+        }
+      </div>
+
+      <button type="button" class="botao" (click)="adicionarItem()">+ Adicionar item</button>
+
+      <p class="status"><strong>Total: R$ {{ calcularTotal() | number: '1.2-2' }}</strong></p>
+
+      <div class="acoes">
+        <button type="submit" class="botao botao--primario" [disabled]="salvando()">
+          {{ salvando() ? 'Salvando...' : 'Salvar' }}
+        </button>
+        <a [routerLink]="editando ? ['/reembolsos', reembolsoId] : ['/reembolsos']" class="botao botao--texto">Cancelar</a>
+      </div>
+    </form>
+  }
+</section>

@@ -206,7 +206,8 @@ textarea {
 }
 
 .badge--ativo,
-.badge--emuso {
+.badge--emuso,
+.badge--aprovado {
   background: #dcfce7;
   color: #15803d;
 }
@@ -218,9 +219,15 @@ textarea {
 }
 
 .badge--inativo,
-.badge--encerrado {
+.badge--encerrado,
+.badge--rascunho {
   background: var(--color-bg-subtle);
   color: var(--color-secondary);
+}
+
+.badge--devolvidopararevisao {
+  background: #ffedd5;
+  color: #c2410c;
 }
 
 .badge--reprovado {

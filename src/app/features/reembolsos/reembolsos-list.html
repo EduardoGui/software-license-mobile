@@ -1,0 +1,27 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <header class="topo">
+    <h1>Meus reembolsos</h1>
+    <a routerLink="/reembolsos/novo" class="botao botao--primario">Novo</a>
+  </header>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else if (semUsuario()) {
+    <p class="status status--erro">Não foi possível identificar seu usuário.</p>
+  } @else if (erro()) {
+    <p class="status status--erro">Não foi possível carregar seus reembolsos.</p>
+  } @else if (reembolsos().length === 0) {
+    <p class="status">Nenhum reembolso ainda.</p>
+  } @else {
+    <div class="lista">
+      @for (reembolso of reembolsos(); track reembolso.id) {
+        <a [routerLink]="['/reembolsos', reembolso.id]" class="cartao-item">
+          <span class="cartao-item__titulo">Nº {{ reembolso.numero }} — {{ reembolso.finalidade }}</span>
+          <span class="cartao-item__detalhe">{{ reembolso.dataSolicitacao | dataBr }} · R$ {{ reembolso.valorTotal | number: '1.2-2' }}</span>
+          <span class="badge" [class]="'badge--' + reembolso.status.toLowerCase()">{{ rotuloStatus(reembolso.status) }}</span>
+        </a>
+      }
+    </div>
+  }
+</section>

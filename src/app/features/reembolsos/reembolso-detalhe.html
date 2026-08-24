@@ -1,0 +1,71 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else if (!reembolso()) {
+    <p class="status status--erro">{{ erro() }}</p>
+  } @else {
+    <h1>Nº {{ reembolso()!.numero }}</h1>
+
+    @if (erro()) {
+      <p class="status status--erro">{{ erro() }}</p>
+    }
+
+    <dl class="detalhes">
+      <dt>Status</dt>
+      <dd><span class="badge" [class]="'badge--' + reembolso()!.status.toLowerCase()">{{ rotuloStatus(reembolso()!.status) }}</span></dd>
+
+      <dt>Finalidade</dt>
+      <dd>{{ reembolso()!.finalidade }}</dd>
+
+      <dt>Data da solicitação</dt>
+      <dd>{{ reembolso()!.dataSolicitacao | dataBr }}</dd>
+
+      <dt>Forma de pagamento</dt>
+      <dd>{{ reembolso()!.formaPagamento || '-' }}</dd>
+
+      <dt>Local</dt>
+      <dd>{{ reembolso()!.localNome || '-' }}</dd>
+
+      <dt>Observação</dt>
+      <dd>{{ reembolso()!.observacao || '-' }}</dd>
+
+      @if (reembolso()!.status === 'DevolvidoParaRevisao' && reembolso()!.observacaoAprovador) {
+        <dt>Motivo da devolução</dt>
+        <dd>{{ reembolso()!.observacaoAprovador }}</dd>
+      }
+
+      @if (reembolso()!.status === 'Reprovado' && reembolso()!.observacaoAprovador) {
+        <dt>Motivo da reprovação</dt>
+        <dd>{{ reembolso()!.observacaoAprovador }}</dd>
+      }
+    </dl>
+
+    <h2>Itens</h2>
+    <div class="lista">
+      @for (item of reembolso()!.itens; track item.id) {
+        <div class="cartao-item">
+          <span class="cartao-item__titulo">{{ item.tipoDespesaNome }} — R$ {{ item.valor | number: '1.2-2' }}</span>
+          <span class="cartao-item__detalhe">{{ item.data | dataBr }}</span>
+          @if (item.descricao) {
+            <span class="cartao-item__detalhe">{{ item.descricao }}</span>
+          }
+        </div>
+      }
+    </div>
+    <p class="status"><strong>Total: R$ {{ reembolso()!.valorTotal | number: '1.2-2' }}</strong></p>
+
+    @if (editavel()) {
+      <div class="acoes">
+        <a [routerLink]="['/reembolsos', reembolso()!.id, 'editar']" class="botao">Editar</a>
+        <button type="button" class="botao botao--primario" [disabled]="enviando()" (click)="enviarParaAprovacao()">
+          {{ enviando() ? 'Enviando...' : 'Enviar para aprovação' }}
+        </button>
+        <button type="button" class="botao" [disabled]="excluindo()" (click)="excluir()">
+          {{ excluindo() ? 'Excluindo...' : 'Excluir' }}
+        </button>
+      </div>
+    }
+  }
+</section>
