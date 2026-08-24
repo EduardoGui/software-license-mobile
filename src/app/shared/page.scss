@@ -204,3 +204,33 @@ textarea {
   font-weight: 600;
   width: fit-content;
 }
+
+.badge--ativo,
+.badge--emuso {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge--agendado,
+.badge--enviadoparaaprovacao {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.badge--inativo,
+.badge--encerrado {
+  background: var(--color-bg-subtle);
+  color: var(--color-secondary);
+}
+
+.badge--reprovado {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.acoes {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}

@@ -38,4 +38,24 @@ export class AuthService {
   estaAutenticado(): boolean {
     return !!this.obterToken();
   }
+
+  obterUsuarioId(): number | null {
+    const valor = this.obterClaims()?.['usuarioId'];
+    return typeof valor === 'string' ? Number(valor) : null;
+  }
+
+  private obterClaims(): Record<string, unknown> | null {
+    const token = this.obterToken();
+    const payload = token?.split('.')[1];
+    if (!payload) {
+      return null;
+    }
+
+    try {
+      const normalizado = payload.replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(atob(normalizado));
+    } catch {
+      return null;
+    }
+  }
 }

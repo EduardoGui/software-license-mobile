@@ -1,0 +1,41 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <h1>Editar dados bancários</h1>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else if (erro() && !salvando()) {
+    <p class="status status--erro">{{ erro() }}</p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      @if (erro()) {
+        <p class="status status--erro">{{ erro() }}</p>
+      }
+
+      <label>
+        Chave PIX
+        <input type="text" formControlName="chavePix" />
+      </label>
+
+      <label>
+        Banco
+        <input type="text" formControlName="banco" />
+      </label>
+
+      <label>
+        Agência
+        <input type="text" formControlName="agencia" />
+      </label>
+
+      <label>
+        Conta bancária
+        <input type="text" formControlName="contaBancaria" />
+      </label>
+
+      <button type="submit" class="botao botao--primario" [disabled]="salvando()">
+        {{ salvando() ? 'Salvando...' : 'Salvar' }}
+      </button>
+      <a routerLink="/meus-dados" class="botao botao--texto">Cancelar</a>
+    </form>
+  }
+</section>

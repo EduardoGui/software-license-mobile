@@ -1,0 +1,81 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <h1>Meus dados</h1>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else if (erro() || !usuario()) {
+    <p class="status status--erro">Não foi possível carregar seus dados.</p>
+  } @else {
+    <dl class="detalhes">
+      <dt>Nome</dt>
+      <dd>{{ usuario()!.nome }}</dd>
+
+      <dt>Email</dt>
+      <dd>{{ usuario()!.email }}</dd>
+
+      <dt>Data de início</dt>
+      <dd>{{ usuario()!.dataInicio | dataBr }}</dd>
+
+      <dt>Status</dt>
+      <dd><span class="badge" [class]="'badge--' + usuario()!.status.toLowerCase()">{{ usuario()!.status }}</span></dd>
+
+      <dt>CPF</dt>
+      <dd>{{ usuario()!.cpf || '-' }}</dd>
+
+      <dt>Cargo</dt>
+      <dd>{{ usuario()!.cargo || '-' }}</dd>
+
+      <dt>Setor</dt>
+      <dd>{{ usuario()!.setorNome || '-' }}</dd>
+
+      <dt>Chave PIX</dt>
+      <dd>{{ usuario()!.chavePix || '-' }}</dd>
+
+      <dt>Banco / Agência / Conta</dt>
+      <dd>
+        @if (usuario()!.banco || usuario()!.agencia || usuario()!.contaBancaria) {
+          {{ usuario()!.banco || '-' }} / {{ usuario()!.agencia || '-' }} / {{ usuario()!.contaBancaria || '-' }}
+        } @else {
+          -
+        }
+      </dd>
+    </dl>
+
+    <div class="acoes">
+      <a routerLink="/meus-dados/editar" class="botao botao--primario">Editar dados bancários</a>
+    </div>
+
+    <h2>Licenças em uso</h2>
+    @if (carregandoLicencas()) {
+      <p class="status">Carregando...</p>
+    } @else if (licencas().length === 0) {
+      <p class="status">Nenhuma licença em uso.</p>
+    } @else {
+      <div class="lista">
+        @for (movimentacao of licencas(); track movimentacao.id) {
+          <div class="cartao-item">
+            <span class="cartao-item__titulo">{{ movimentacao.licencaNome }}</span>
+            <span class="cartao-item__detalhe">desde {{ movimentacao.dataInicio | dataBr }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    <h2>Equipamentos em uso</h2>
+    @if (carregandoEquipamentos()) {
+      <p class="status">Carregando...</p>
+    } @else if (equipamentos().length === 0) {
+      <p class="status">Nenhum equipamento em uso.</p>
+    } @else {
+      <div class="lista">
+        @for (alocacao of equipamentos(); track alocacao.id) {
+          <div class="cartao-item">
+            <span class="cartao-item__titulo">{{ alocacao.equipamentoDescricao }}</span>
+            <span class="cartao-item__detalhe">desde {{ alocacao.dataInicio | dataBr }}</span>
+          </div>
+        }
+      </div>
+    }
+  }
+</section>
