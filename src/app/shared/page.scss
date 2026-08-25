@@ -54,6 +54,23 @@ h2 {
   margin: 0 0 1.5rem;
 }
 
+.secao-cabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.secao-cabecalho h2 {
+  margin: 0 0 0.75rem;
+}
+
+.link {
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
 form {
   display: flex;
   flex-direction: column;

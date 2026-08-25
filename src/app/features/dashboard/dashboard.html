@@ -5,17 +5,48 @@
   </header>
 
   <h1>Início</h1>
-  <p class="subtitulo">Restante do painel em construção — próximas fases.</p>
 
   <div class="lista">
     <a routerLink="/meus-dados" class="cartao-item">
       <span class="cartao-item__titulo">Meus dados</span>
     </a>
-    <a routerLink="/reembolsos" class="cartao-item">
-      <span class="cartao-item__titulo">Meus reembolsos</span>
-    </a>
-    <a routerLink="/aprovacoes" class="cartao-item">
-      <span class="cartao-item__titulo">Aprovações pendentes</span>
-    </a>
   </div>
+
+  <div class="secao-cabecalho">
+    <h2>Reembolsos em aberto</h2>
+    <a routerLink="/reembolsos" class="link">ver todos</a>
+  </div>
+  @if (carregandoReembolsos()) {
+    <p class="status">Carregando...</p>
+  } @else if (reembolsosAbertos().length === 0) {
+    <p class="status">Nenhum reembolso em aberto.</p>
+  } @else {
+    <div class="lista">
+      @for (reembolso of reembolsosAbertos(); track reembolso.id) {
+        <a [routerLink]="['/reembolsos', reembolso.id]" class="cartao-item">
+          <span class="cartao-item__titulo">Nº {{ reembolso.numero }} — {{ reembolso.finalidade }}</span>
+          <span class="cartao-item__detalhe">{{ reembolso.dataSolicitacao | dataBr }} · R$ {{ reembolso.valorTotal | number: '1.2-2' }}</span>
+        </a>
+      }
+    </div>
+  }
+
+  @if (carregandoAprovacoes() || aprovacoesPendentes().length > 0) {
+    <div class="secao-cabecalho">
+      <h2>Aprovações pendentes</h2>
+      <a routerLink="/aprovacoes" class="link">ver todas</a>
+    </div>
+    @if (carregandoAprovacoes()) {
+      <p class="status">Carregando...</p>
+    } @else {
+      <div class="lista">
+        @for (reembolso of aprovacoesPendentes(); track reembolso.id) {
+          <a routerLink="/aprovacoes" class="cartao-item">
+            <span class="cartao-item__titulo">Nº {{ reembolso.numero }} — {{ reembolso.usuarioNome }}</span>
+            <span class="cartao-item__detalhe">{{ reembolso.dataSolicitacao | dataBr }} · R$ {{ reembolso.valorTotal | number: '1.2-2' }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
 </section>
