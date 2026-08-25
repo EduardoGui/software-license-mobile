@@ -1,0 +1,45 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <h1>Aprovações pendentes</h1>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else if (erro()) {
+    <p class="status status--erro">Não foi possível carregar as aprovações pendentes.</p>
+  } @else if (reembolsos().length === 0) {
+    <p class="status">Nenhuma aprovação pendente no momento.</p>
+  } @else {
+    <div class="lista">
+      @for (reembolso of reembolsos(); track reembolso.id) {
+        <div class="cartao-item">
+          <span class="cartao-item__titulo">Nº {{ reembolso.numero }} — {{ reembolso.usuarioNome }}</span>
+          <span class="cartao-item__detalhe">{{ reembolso.finalidade }}</span>
+          <span class="cartao-item__detalhe">{{ reembolso.dataSolicitacao | dataBr }} · R$ {{ reembolso.valorTotal | number: '1.2-2' }}</span>
+
+          <div class="acoes">
+            <button
+              type="button"
+              class="botao botao--primario"
+              [disabled]="aprovandoId() === reembolso.id"
+              (click)="aprovar(reembolso)"
+            >
+              {{ aprovandoId() === reembolso.id ? 'Aprovando...' : 'Aprovar' }}
+            </button>
+            <a
+              [routerLink]="['/aprovacoes', reembolso.id, 'devolver']"
+              [state]="{ numero: reembolso.numero, usuarioNome: reembolso.usuarioNome }"
+              class="botao"
+              >Devolver</a
+            >
+            <a
+              [routerLink]="['/aprovacoes', reembolso.id, 'reprovar']"
+              [state]="{ numero: reembolso.numero, usuarioNome: reembolso.usuarioNome }"
+              class="botao"
+              >Reprovar</a
+            >
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>

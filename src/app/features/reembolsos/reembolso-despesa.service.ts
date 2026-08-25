@@ -37,4 +37,20 @@ export class ReembolsoDespesaService {
   enviar(id: number): Observable<ReembolsoDespesa> {
     return this.http.patch<ReembolsoDespesa>(`${this.baseUrl}/${id}/enviar`, {});
   }
+
+  listarPendentesAprovacao(): Observable<ReembolsoDespesa[]> {
+    return this.http.get<ReembolsoDespesa[]>(`${this.baseUrl}/pendentes-aprovacao`);
+  }
+
+  aprovar(id: number): Observable<ReembolsoDespesa> {
+    return this.http.patch<ReembolsoDespesa>(`${this.baseUrl}/${id}/aprovar`, {});
+  }
+
+  devolver(id: number, observacaoAprovador: string): Observable<ReembolsoDespesa> {
+    return this.http.patch<ReembolsoDespesa>(`${this.baseUrl}/${id}/devolver`, { observacaoAprovador });
+  }
+
+  reprovar(id: number, observacaoAprovador: string | null): Observable<ReembolsoDespesa> {
+    return this.http.patch<ReembolsoDespesa>(`${this.baseUrl}/${id}/reprovar`, { observacaoAprovador });
+  }
 }

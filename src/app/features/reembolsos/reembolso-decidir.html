@@ -1,0 +1,34 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <h1>{{ acao === 'devolver' ? 'Devolver reembolso' : 'Reprovar reembolso' }}</h1>
+
+  @if (contexto.numero || contexto.usuarioNome) {
+    <div class="cartao-item">
+      @if (contexto.numero) {
+        <span class="cartao-item__titulo">Nº {{ contexto.numero }}</span>
+      }
+      @if (contexto.usuarioNome) {
+        <span class="cartao-item__detalhe">{{ contexto.usuarioNome }}</span>
+      }
+    </div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    @if (erro()) {
+      <p class="status status--erro">{{ erro() }}</p>
+    }
+
+    <label>
+      Observação {{ acao === 'devolver' ? '*' : '' }}
+      <textarea formControlName="observacaoAprovador" rows="3"></textarea>
+      @if (acao === 'devolver') {
+        <span class="status">Explique ao colaborador o que precisa ser ajustado.</span>
+      }
+    </label>
+
+    <button type="submit" class="botao botao--primario" [disabled]="salvando()">
+      {{ salvando() ? 'Salvando...' : acao === 'devolver' ? 'Devolver' : 'Reprovar' }}
+    </button>
+    <a routerLink="/aprovacoes" class="botao botao--texto">Cancelar</a>
+  </form>
+</section>
