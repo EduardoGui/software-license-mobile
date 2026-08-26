@@ -54,7 +54,12 @@ export class ReembolsoAprovacaoDetalhe {
 
     this.aprovando.set(true);
     this.reembolsoDespesaService.aprovar(reembolso.id).subscribe({
-      next: () => this.router.navigate(['/aprovacoes']),
+      next: (aprovado) => {
+        if (aprovado.avisoEmail) {
+          alert(aprovado.avisoEmail);
+        }
+        this.router.navigate(['/aprovacoes']);
+      },
       error: (err) => {
         this.aprovando.set(false);
         alert(err?.error?.message ?? 'Não foi possível aprovar o reembolso.');

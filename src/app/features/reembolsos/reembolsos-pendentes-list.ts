@@ -52,9 +52,12 @@ export class ReembolsosPendentesList {
 
     this.aprovandoId.set(reembolso.id);
     this.reembolsoDespesaService.aprovar(reembolso.id).subscribe({
-      next: () => {
+      next: (aprovado) => {
         this.aprovandoId.set(null);
         this.carregar();
+        if (aprovado.avisoEmail) {
+          alert(aprovado.avisoEmail);
+        }
       },
       error: (err) => {
         this.aprovandoId.set(null);
