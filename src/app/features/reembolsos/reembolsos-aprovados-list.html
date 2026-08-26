@@ -1,0 +1,21 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <h1>Reembolsos aprovados</h1>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else if (erro()) {
+    <p class="status status--erro">Não foi possível carregar os reembolsos aprovados.</p>
+  } @else if (reembolsos().length === 0) {
+    <p class="status">Você ainda não aprovou nenhum reembolso.</p>
+  } @else {
+    <div class="lista">
+      @for (reembolso of reembolsos(); track reembolso.id) {
+        <a [routerLink]="['/aprovacoes', reembolso.id]" class="cartao-item">
+          <span class="cartao-item__titulo">Nº {{ reembolso.numero }} — {{ reembolso.usuarioNome }}</span>
+          <span class="cartao-item__detalhe">{{ reembolso.dataDecisao | dataBr }} · R$ {{ reembolso.valorTotal | number: '1.2-2' }}</span>
+        </a>
+      }
+    </div>
+  }
+</section>

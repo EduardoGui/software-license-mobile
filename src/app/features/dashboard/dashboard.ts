@@ -25,6 +25,7 @@ export class Dashboard {
   protected readonly carregandoReembolsos = signal(true);
   protected readonly aprovacoesPendentes = signal<ReembolsoDespesa[]>([]);
   protected readonly carregandoAprovacoes = signal(true);
+  protected readonly temAprovacaoAprovada = signal(false);
 
   protected sair(): void {
     this.authService.logout();
@@ -57,6 +58,13 @@ export class Dashboard {
         this.carregandoAprovacoes.set(false);
       },
       error: () => this.carregandoAprovacoes.set(false),
+    });
+
+    // Só usado para decidir se a seção de aprovações aparece mesmo com a fila zerada -
+    // sem isso, um aprovador sem pendentes no momento perderia o acesso ao próprio histórico.
+    this.reembolsoDespesaService.listarAprovadosPorMim().subscribe({
+      next: (reembolsos) => this.temAprovacaoAprovada.set(reembolsos.length > 0),
+      error: () => {},
     });
   }
 }

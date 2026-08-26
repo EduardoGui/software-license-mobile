@@ -31,13 +31,15 @@
     </div>
   }
 
-  @if (carregandoAprovacoes() || aprovacoesPendentes().length > 0) {
+  @if (carregandoAprovacoes() || aprovacoesPendentes().length > 0 || temAprovacaoAprovada()) {
     <div class="secao-cabecalho">
       <h2>Aprovações pendentes</h2>
       <a routerLink="/aprovacoes" class="link">ver todas</a>
     </div>
     @if (carregandoAprovacoes()) {
       <p class="status">Carregando...</p>
+    } @else if (aprovacoesPendentes().length === 0) {
+      <p class="status">Nenhuma aprovação pendente.</p>
     } @else {
       <div class="lista">
         @for (reembolso of aprovacoesPendentes(); track reembolso.id) {
@@ -48,5 +50,6 @@
         }
       </div>
     }
+    <a routerLink="/aprovacoes/aprovados" class="link">Reembolsos que já aprovei</a>
   }
 </section>
