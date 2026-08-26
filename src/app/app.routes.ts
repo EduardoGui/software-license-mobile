@@ -10,6 +10,7 @@ import { ReembolsoForm } from './features/reembolsos/reembolso-form';
 import { ReembolsoDetalhe } from './features/reembolsos/reembolso-detalhe';
 import { ReembolsosPendentesList } from './features/reembolsos/reembolsos-pendentes-list';
 import { ReembolsoDecidir } from './features/reembolsos/reembolso-decidir';
+import { ReembolsoAprovacaoDetalhe } from './features/reembolsos/reembolso-aprovacao-detalhe';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'reembolsos/:id/editar', component: ReembolsoForm, canActivate: [authGuard] },
   { path: 'reembolsos/:id', component: ReembolsoDetalhe, canActivate: [authGuard] },
   { path: 'aprovacoes', component: ReembolsosPendentesList, canActivate: [authGuard] },
+  { path: 'aprovacoes/:id', component: ReembolsoAprovacaoDetalhe, canActivate: [authGuard] },
   { path: 'aprovacoes/:id/devolver', component: ReembolsoDecidir, canActivate: [authGuard], data: { acao: 'devolver' } },
   { path: 'aprovacoes/:id/reprovar', component: ReembolsoDecidir, canActivate: [authGuard], data: { acao: 'reprovar' } },
   { path: '**', redirectTo: '' },

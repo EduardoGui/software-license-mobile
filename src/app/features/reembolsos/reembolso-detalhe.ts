@@ -3,12 +3,13 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { DataBrPipe } from '../../shared/pipes/data-br.pipe';
+import { ComprovanteItem } from './comprovante-item';
 import { ReembolsoDespesa, ROTULOS_STATUS, STATUS_EDITAVEIS } from './reembolso-despesa';
 import { ReembolsoDespesaService } from './reembolso-despesa.service';
 
 @Component({
   selector: 'app-reembolso-detalhe',
-  imports: [RouterLink, DataBrPipe, DecimalPipe],
+  imports: [RouterLink, DataBrPipe, DecimalPipe, ComprovanteItem],
   templateUrl: './reembolso-detalhe.html',
   styleUrl: '../../shared/page.scss',
 })

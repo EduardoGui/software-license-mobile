@@ -7,11 +7,12 @@ import { Local } from '../locais/local';
 import { LocalService } from '../locais/local.service';
 import { TipoDespesa } from '../tipos-despesa/tipo-despesa';
 import { TipoDespesaService } from '../tipos-despesa/tipo-despesa.service';
+import { ComprovanteItem } from './comprovante-item';
 import { ReembolsoDespesaService } from './reembolso-despesa.service';
 
 @Component({
   selector: 'app-reembolso-form',
-  imports: [ReactiveFormsModule, RouterLink, DecimalPipe],
+  imports: [ReactiveFormsModule, RouterLink, DecimalPipe, ComprovanteItem],
   templateUrl: './reembolso-form.html',
   styleUrl: '../../shared/page.scss',
 })
@@ -44,8 +45,16 @@ export class ReembolsoForm {
     return this.form.controls.itens;
   }
 
-  private criarLinhaItem(valores?: { data: string; tipoDespesaId: number | null; descricao: string | null; numeroDocumento: string | null; valor: number }) {
+  private criarLinhaItem(valores?: {
+    id: number | null;
+    data: string;
+    tipoDespesaId: number | null;
+    descricao: string | null;
+    numeroDocumento: string | null;
+    valor: number;
+  }) {
     return this.fb.nonNullable.group({
+      id: this.fb.control<number | null>(valores?.id ?? null),
       data: [valores?.data ?? new Date().toISOString().slice(0, 10), Validators.required],
       tipoDespesaId: this.fb.control<number | null>(valores?.tipoDespesaId ?? null, Validators.required),
       descricao: [valores?.descricao ?? ''],
@@ -95,6 +104,7 @@ export class ReembolsoForm {
           for (const item of reembolso.itens) {
             this.itens.push(
               this.criarLinhaItem({
+                id: item.id,
                 data: item.data,
                 tipoDespesaId: item.tipoDespesaId,
                 descricao: item.descricao,
@@ -127,6 +137,7 @@ export class ReembolsoForm {
       localId: valor.localId,
       observacao: valor.observacao || null,
       itens: valor.itens.map((item) => ({
+        id: item.id,
         data: item.data,
         tipoDespesaId: item.tipoDespesaId,
         descricao: item.descricao || null,

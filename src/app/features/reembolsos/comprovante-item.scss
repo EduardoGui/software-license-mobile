@@ -1,0 +1,54 @@
+.comprovante {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--color-border-light);
+}
+
+.comprovante__nome {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  word-break: break-word;
+}
+
+.comprovante__status {
+  font-size: 0.85rem;
+  color: var(--color-secondary);
+}
+
+.comprovante__erro {
+  font-size: 0.8rem;
+  color: #b91c1c;
+}
+
+.comprovante__acoes {
+  display: flex;
+  gap: 1rem;
+}
+
+.input-arquivo-oculto {
+  display: none;
+}
+
+.link {
+  border: none;
+  background: none;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  text-decoration: underline;
+  padding: 0.2rem 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.link--perigo {
+  color: #b91c1c;
+}
+
+.link:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

@@ -7,10 +7,7 @@
     <p class="status status--erro">{{ erro() }}</p>
   } @else {
     <h1>Nº {{ reembolso()!.numero }}</h1>
-
-    @if (erro()) {
-      <p class="status status--erro">{{ erro() }}</p>
-    }
+    <p class="subtitulo">{{ reembolso()!.usuarioNome }}</p>
 
     <dl class="detalhes">
       <dt>Status</dt>
@@ -27,19 +24,6 @@
 
       <dt>Local</dt>
       <dd>{{ reembolso()!.localNome || '-' }}</dd>
-
-      <dt>Observação</dt>
-      <dd>{{ reembolso()!.observacao || '-' }}</dd>
-
-      @if (reembolso()!.status === 'DevolvidoParaRevisao' && reembolso()!.observacaoAprovador) {
-        <dt>Motivo da devolução</dt>
-        <dd>{{ reembolso()!.observacaoAprovador }}</dd>
-      }
-
-      @if (reembolso()!.status === 'Reprovado' && reembolso()!.observacaoAprovador) {
-        <dt>Motivo da reprovação</dt>
-        <dd>{{ reembolso()!.observacaoAprovador }}</dd>
-      }
     </dl>
 
     <h2>Itens</h2>
@@ -57,15 +41,13 @@
     </div>
     <p class="status"><strong>Total: R$ {{ reembolso()!.valorTotal | number: '1.2-2' }}</strong></p>
 
-    @if (editavel()) {
+    @if (reembolso()!.status === 'EnviadoParaAprovacao') {
       <div class="acoes">
-        <a [routerLink]="['/reembolsos', reembolso()!.id, 'editar']" class="botao">Editar</a>
-        <button type="button" class="botao botao--primario" [disabled]="enviando()" (click)="enviarParaAprovacao()">
-          {{ enviando() ? 'Enviando...' : 'Enviar para aprovação' }}
+        <button type="button" class="botao botao--primario" [disabled]="aprovando()" (click)="aprovar()">
+          {{ aprovando() ? 'Aprovando...' : 'Aprovar' }}
         </button>
-        <button type="button" class="botao" [disabled]="excluindo()" (click)="excluir()">
-          {{ excluindo() ? 'Excluindo...' : 'Excluir' }}
-        </button>
+        <button type="button" class="botao" (click)="devolver()">Devolver</button>
+        <button type="button" class="botao" (click)="reprovar()">Reprovar</button>
       </div>
     }
   }

@@ -17,6 +17,7 @@
           <span class="cartao-item__detalhe">{{ reembolso.dataSolicitacao | dataBr }} · R$ {{ reembolso.valorTotal | number: '1.2-2' }}</span>
 
           <div class="acoes">
+            <a [routerLink]="['/aprovacoes', reembolso.id]" class="botao">Ver detalhes</a>
             <button
               type="button"
               class="botao botao--primario"
