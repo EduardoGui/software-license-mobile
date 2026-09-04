@@ -3,6 +3,7 @@ import { Component, ElementRef, computed, effect, inject, input, signal, viewChi
 
 import { Anexo } from '../../shared/anexos/anexo';
 import { AnexoService } from '../../shared/anexos/anexo.service';
+import { comprimirImagemSeNecessario } from '../../shared/anexos/comprimir-imagem';
 
 @Component({
   selector: 'app-comprovante-item',
@@ -52,15 +53,17 @@ export class ComprovanteItem {
     this.inputArquivo()?.nativeElement.click();
   }
 
-  protected aoSelecionarArquivo(event: Event): void {
+  protected async aoSelecionarArquivo(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
-    const arquivo = input.files?.[0];
-    if (!arquivo) {
+    const arquivoOriginal = input.files?.[0];
+    if (!arquivoOriginal) {
       return;
     }
 
     this.enviando.set(true);
     this.erro.set(null);
+
+    const arquivo = await comprimirImagemSeNecessario(arquivoOriginal);
 
     this.anexoService.enviar(this.recurso(), this.itemId(), arquivo).subscribe({
       next: (anexo) => {
