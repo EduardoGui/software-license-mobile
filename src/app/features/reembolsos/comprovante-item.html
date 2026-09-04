@@ -12,7 +12,7 @@
   @if (carregando()) {
     <span class="comprovante__status">Carregando comprovante...</span>
   } @else if (anexo(); as a) {
-    <span class="comprovante__nome">{{ a.nomeArquivo }}</span>
+    <button type="button" class="link comprovante__nome" (click)="abrir(a)">{{ a.nomeArquivo }}</button>
     <div class="comprovante__acoes">
       <button type="button" class="link" (click)="baixar(a)">Baixar</button>
       @if (!somenteLeitura()) {
