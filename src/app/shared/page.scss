@@ -224,13 +224,15 @@ textarea {
 
 .badge--ativo,
 .badge--emuso,
-.badge--aprovado {
+.badge--aprovado,
+.badge--recebida {
   background: #dcfce7;
   color: #15803d;
 }
 
 .badge--agendado,
-.badge--enviadoparaaprovacao {
+.badge--enviadoparaaprovacao,
+.badge--enviada {
   background: #fef9c3;
   color: #a16207;
 }

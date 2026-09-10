@@ -1,0 +1,45 @@
+<section class="anexos-secao">
+  <h2>Anexos</h2>
+
+  @if (!somenteLeitura()) {
+    <input
+      #inputArquivo
+      type="file"
+      class="input-arquivo-oculto"
+      accept="application/pdf,image/jpeg,image/png"
+      (change)="aoSelecionarArquivo($event)"
+    />
+    <button type="button" class="link" [disabled]="enviando()" (click)="abrirSeletorArquivo()">
+      {{ enviando() ? 'Enviando...' : '+ Adicionar anexo' }}
+    </button>
+  }
+
+  @if (erro()) {
+    <p class="status status--erro">{{ erro() }}</p>
+  }
+
+  @if (carregando()) {
+    <p class="status">Carregando anexos...</p>
+  } @else if (anexos().length === 0) {
+    <p class="status">Nenhum anexo adicionado ainda.</p>
+  } @else {
+    <ul class="lista-anexos">
+      @for (anexo of anexos(); track anexo.id) {
+        <li>
+          <div class="anexo-info">
+            <button type="button" class="link anexo-nome" (click)="abrir(anexo)">{{ anexo.nomeArquivo }}</button>
+            <span class="anexo-detalhe">{{ formatarTamanho(anexo.tamanho) }} · {{ anexo.dataUpload | dataBr }}</span>
+          </div>
+          <div class="anexo-acoes">
+            <button type="button" class="link" (click)="baixar(anexo)">Baixar</button>
+            @if (!somenteLeitura()) {
+              <button type="button" class="link link--perigo" [disabled]="excluindoId() === anexo.id" (click)="excluir(anexo)">
+                Excluir
+              </button>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

@@ -12,6 +12,8 @@ import { ReembolsosPendentesList } from './features/reembolsos/reembolsos-penden
 import { ReembolsoDecidir } from './features/reembolsos/reembolso-decidir';
 import { ReembolsoAprovacaoDetalhe } from './features/reembolsos/reembolso-aprovacao-detalhe';
 import { ReembolsosAprovadosList } from './features/reembolsos/reembolsos-aprovados-list';
+import { NotasDebitoPjList } from './features/notas-debito-pj/notas-debito-pj-list';
+import { NotaDebitoPjDetalhe } from './features/notas-debito-pj/nota-debito-pj-detalhe';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -27,5 +29,7 @@ export const routes: Routes = [
   { path: 'aprovacoes/:id', component: ReembolsoAprovacaoDetalhe, canActivate: [authGuard] },
   { path: 'aprovacoes/:id/devolver', component: ReembolsoDecidir, canActivate: [authGuard], data: { acao: 'devolver' } },
   { path: 'aprovacoes/:id/reprovar', component: ReembolsoDecidir, canActivate: [authGuard], data: { acao: 'reprovar' } },
+  { path: 'notas-debito-pj', component: NotasDebitoPjList, canActivate: [authGuard] },
+  { path: 'notas-debito-pj/:id', component: NotaDebitoPjDetalhe, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
 ];

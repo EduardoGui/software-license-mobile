@@ -1,0 +1,26 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+  <header class="topo">
+    <h1>Minhas notas de débito</h1>
+  </header>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else if (semUsuario()) {
+    <p class="status status--erro">Não foi possível identificar seu usuário.</p>
+  } @else if (erro()) {
+    <p class="status status--erro">Não foi possível carregar suas notas de débito.</p>
+  } @else if (notas().length === 0) {
+    <p class="status">Nenhuma nota de débito ainda.</p>
+  } @else {
+    <div class="lista">
+      @for (nota of notas(); track nota.id) {
+        <a [routerLink]="['/notas-debito-pj', nota.id]" class="cartao-item">
+          <span class="cartao-item__titulo">{{ mesAno(nota) }} — {{ nota.operadoraSaude }}</span>
+          <span class="cartao-item__detalhe">R$ {{ nota.valorLiquido | number: '1.2-2' }}</span>
+          <span class="badge" [class]="'badge--' + nota.status.toLowerCase()">{{ rotuloStatus(nota.status) }}</span>
+        </a>
+      }
+    </div>
+  }
+</section>

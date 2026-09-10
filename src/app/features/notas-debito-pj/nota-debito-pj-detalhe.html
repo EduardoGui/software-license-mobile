@@ -1,0 +1,76 @@
+<section class="page">
+  <button type="button" class="voltar" (click)="voltar()">← Voltar</button>
+
+  @if (carregando()) {
+    <p class="status">Carregando...</p>
+  } @else if (!nota()) {
+    <p class="status status--erro">{{ erro() }}</p>
+  } @else {
+    <h1>{{ mesAno(nota()!) }}</h1>
+
+    @if (erro()) {
+      <p class="status status--erro">{{ erro() }}</p>
+    }
+
+    <dl class="detalhes">
+      <dt>Status</dt>
+      <dd><span class="badge" [class]="'badge--' + nota()!.status.toLowerCase()">{{ rotuloStatus(nota()!.status) }}</span></dd>
+
+      <dt>Operadora</dt>
+      <dd>{{ nota()!.operadoraSaude }}</dd>
+
+      @if (nota()!.numeroDocumento) {
+        <dt>Documento</dt>
+        <dd>{{ nota()!.numeroDocumento }}</dd>
+      }
+
+      <dt>Valor bruto</dt>
+      <dd>R$ {{ nota()!.valorBruto | number: '1.2-2' }}</dd>
+
+      @if (nota()!.desconto > 0) {
+        <dt>Desconto</dt>
+        <dd>R$ {{ nota()!.desconto | number: '1.2-2' }}</dd>
+      }
+
+      @if (nota()!.retencaoTributaria > 0) {
+        <dt>Retenção tributária</dt>
+        <dd>R$ {{ nota()!.retencaoTributaria | number: '1.2-2' }}</dd>
+      }
+
+      <dt>Valor a pagar</dt>
+      <dd><strong>R$ {{ nota()!.valorLiquido | number: '1.2-2' }}</strong></dd>
+
+      @if (nota()!.dataVencimento) {
+        <dt>Vencimento</dt>
+        <dd>{{ nota()!.dataVencimento | dataBr }}</dd>
+      }
+
+      @if (nota()!.formaPagamento) {
+        <dt>Forma de pagamento</dt>
+        <dd>{{ nota()!.formaPagamento }}</dd>
+      }
+
+      @if (nota()!.descricao) {
+        <dt>Descrição</dt>
+        <dd>{{ nota()!.descricao }}</dd>
+      }
+
+      @if (nota()!.dataPagamento) {
+        <dt>Data do pagamento</dt>
+        <dd>{{ nota()!.dataPagamento | dataBr }}</dd>
+      }
+    </dl>
+
+    <div class="acoes">
+      <button type="button" class="botao botao--primario" [disabled]="abrindoPdf()" (click)="abrirPdf()">
+        {{ abrindoPdf() ? 'Abrindo...' : 'Ver PDF (QR Code Pix)' }}
+      </button>
+    </div>
+
+    <p class="status">
+      Escaneie o QR Code do PDF pra pagar via Pix. Depois de pagar, anexe o comprovante abaixo.
+    </p>
+
+    <app-anexos-secao recurso="notas-debito-pj" [entidadeId]="nota()!.id" />
+  }
+</section>

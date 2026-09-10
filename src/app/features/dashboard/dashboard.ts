@@ -4,11 +4,17 @@ import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../auth/auth.service';
 import { DataBrPipe } from '../../shared/pipes/data-br.pipe';
+import { NotaDebitoPj } from '../notas-debito-pj/nota-debito-pj';
+import { NotaDebitoPjService } from '../notas-debito-pj/nota-debito-pj.service';
 import { ReembolsoDespesa } from '../reembolsos/reembolso-despesa';
 import { ReembolsoDespesaService } from '../reembolsos/reembolso-despesa.service';
 
 const LIMITE_PREVIA = 5;
 const STATUS_ABERTOS = ['Rascunho', 'EnviadoParaAprovacao', 'DevolvidoParaRevisao'];
+const NOMES_MESES = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+];
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +25,7 @@ const STATUS_ABERTOS = ['Rascunho', 'EnviadoParaAprovacao', 'DevolvidoParaRevisa
 export class Dashboard {
   private readonly authService = inject(AuthService);
   private readonly reembolsoDespesaService = inject(ReembolsoDespesaService);
+  private readonly notaDebitoPjService = inject(NotaDebitoPjService);
   private readonly router = inject(Router);
 
   protected readonly reembolsosAbertos = signal<ReembolsoDespesa[]>([]);
@@ -26,6 +33,13 @@ export class Dashboard {
   protected readonly aprovacoesPendentes = signal<ReembolsoDespesa[]>([]);
   protected readonly carregandoAprovacoes = signal(true);
   protected readonly temAprovacaoAprovada = signal(false);
+  protected readonly notasPendentes = signal<NotaDebitoPj[]>([]);
+  protected readonly carregandoNotas = signal(true);
+  protected readonly temNotaDebito = signal(false);
+
+  protected mesAno(nota: NotaDebitoPj): string {
+    return `${NOMES_MESES[nota.mes - 1]}/${nota.ano}`;
+  }
 
   protected sair(): void {
     this.authService.logout();
@@ -48,8 +62,24 @@ export class Dashboard {
         },
         error: () => this.carregandoReembolsos.set(false),
       });
+
+      // Só aparece pra quem tem alguma nota de débito (colaborador PJ) - a maioria não tem nenhuma.
+      this.notaDebitoPjService.listar({ usuarioId }).subscribe({
+        next: (notas) => {
+          this.temNotaDebito.set(notas.length > 0);
+          this.notasPendentes.set(
+            notas
+              .filter((n) => n.status !== 'Recebida')
+              .sort((a, b) => b.ano - a.ano || b.mes - a.mes)
+              .slice(0, LIMITE_PREVIA),
+          );
+          this.carregandoNotas.set(false);
+        },
+        error: () => this.carregandoNotas.set(false),
+      });
     } else {
       this.carregandoReembolsos.set(false);
+      this.carregandoNotas.set(false);
     }
 
     this.reembolsoDespesaService.listarPendentesAprovacao().subscribe({

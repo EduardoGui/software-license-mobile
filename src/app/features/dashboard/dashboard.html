@@ -31,6 +31,27 @@
     </div>
   }
 
+  @if (carregandoNotas() || temNotaDebito()) {
+    <div class="secao-cabecalho">
+      <h2>Notas de débito</h2>
+      <a routerLink="/notas-debito-pj" class="link">ver todas</a>
+    </div>
+    @if (carregandoNotas()) {
+      <p class="status">Carregando...</p>
+    } @else if (notasPendentes().length === 0) {
+      <p class="status">Nenhuma nota de débito pendente.</p>
+    } @else {
+      <div class="lista">
+        @for (nota of notasPendentes(); track nota.id) {
+          <a [routerLink]="['/notas-debito-pj', nota.id]" class="cartao-item">
+            <span class="cartao-item__titulo">{{ mesAno(nota) }} — {{ nota.operadoraSaude }}</span>
+            <span class="cartao-item__detalhe">R$ {{ nota.valorLiquido | number: '1.2-2' }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+
   @if (carregandoAprovacoes() || aprovacoesPendentes().length > 0 || temAprovacaoAprovada()) {
     <div class="secao-cabecalho">
       <h2>Aprovações pendentes</h2>
