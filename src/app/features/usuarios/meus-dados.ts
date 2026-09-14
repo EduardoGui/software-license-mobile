@@ -5,6 +5,8 @@ import { AuthService } from '../auth/auth.service';
 import { DataBrPipe } from '../../shared/pipes/data-br.pipe';
 import { EquipamentoAlocacao } from '../equipamento-alocacoes/equipamento-alocacao';
 import { EquipamentoAlocacaoService } from '../equipamento-alocacoes/equipamento-alocacao.service';
+import { MinhaEntrega } from '../minhas-entregas/minha-entrega';
+import { MinhaEntregaService } from '../minhas-entregas/minha-entrega.service';
 import { Movimentacao } from '../movimentacoes/movimentacao';
 import { MovimentacaoService } from '../movimentacoes/movimentacao.service';
 import { Usuario } from './usuario';
@@ -20,6 +22,7 @@ export class MeusDados {
   private readonly usuarioService = inject(UsuarioService);
   private readonly movimentacaoService = inject(MovimentacaoService);
   private readonly equipamentoAlocacaoService = inject(EquipamentoAlocacaoService);
+  private readonly minhaEntregaService = inject(MinhaEntregaService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
@@ -32,8 +35,20 @@ export class MeusDados {
   protected readonly equipamentos = signal<EquipamentoAlocacao[]>([]);
   protected readonly carregandoEquipamentos = signal(true);
 
+  protected readonly historicoEntregas = signal<MinhaEntrega[]>([]);
+  protected readonly carregandoHistorico = signal(true);
+  protected readonly historicoAberto = signal(false);
+
   protected voltar(): void {
     this.router.navigate(['/']);
+  }
+
+  protected alternarHistorico(): void {
+    this.historicoAberto.update((aberto) => !aberto);
+  }
+
+  protected resumoItens(entrega: MinhaEntrega): string {
+    return entrega.itens.map((i) => `${i.quantidade}× ${i.descricao}${i.tamanho ? ' (' + i.tamanho + ')' : ''}`).join(', ');
   }
 
   constructor() {
@@ -43,6 +58,7 @@ export class MeusDados {
       this.carregando.set(false);
       this.carregandoLicencas.set(false);
       this.carregandoEquipamentos.set(false);
+      this.carregandoHistorico.set(false);
       return;
     }
 
@@ -71,6 +87,14 @@ export class MeusDados {
         this.carregandoEquipamentos.set(false);
       },
       error: () => this.carregandoEquipamentos.set(false),
+    });
+
+    this.minhaEntregaService.listar().subscribe({
+      next: (entregas) => {
+        this.historicoEntregas.set(entregas);
+        this.carregandoHistorico.set(false);
+      },
+      error: () => this.carregandoHistorico.set(false),
     });
   }
 }

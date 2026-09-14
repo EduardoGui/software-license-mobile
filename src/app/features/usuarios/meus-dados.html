@@ -77,5 +77,27 @@
         }
       </div>
     }
+
+    @if (!carregandoHistorico() && historicoEntregas().length > 0) {
+      <button type="button" class="secao-cabecalho secao-cabecalho--botao" (click)="alternarHistorico()">
+        <h2>Histórico de recebimentos</h2>
+        <span class="seta">{{ historicoAberto() ? '▾' : '▸' }}</span>
+      </button>
+
+      @if (historicoAberto()) {
+        <div class="lista">
+          @for (entrega of historicoEntregas(); track entrega.id) {
+            <div class="cartao-item">
+              <span class="cartao-item__titulo">{{ entrega.campanhaNome }}</span>
+              <span class="cartao-item__detalhe">{{ resumoItens(entrega) }}</span>
+              <span class="cartao-item__detalhe">
+                {{ entrega.dataConfirmacao ? (entrega.dataConfirmacao | dataBr) : '-' }}
+                <span class="badge" [class]="'badge--' + entrega.status.toLowerCase()">{{ entrega.status === 'Divergencia' ? 'Divergência' : 'Confirmado' }}</span>
+              </span>
+            </div>
+          }
+        </div>
+      }
+    }
   }
 </section>

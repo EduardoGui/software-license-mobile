@@ -65,6 +65,21 @@ h2 {
   margin: 0 0 0.75rem;
 }
 
+.secao-cabecalho--botao {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.secao-cabecalho--botao .seta {
+  color: var(--color-secondary);
+  font-size: 0.85rem;
+}
+
 .link {
   color: var(--color-primary);
   font-size: 0.85rem;
@@ -225,9 +240,15 @@ textarea {
 .badge--ativo,
 .badge--emuso,
 .badge--aprovado,
-.badge--recebida {
+.badge--recebida,
+.badge--confirmado {
   background: #dcfce7;
   color: #15803d;
+}
+
+.badge--divergencia {
+  background: #fef9c3;
+  color: #a16207;
 }
 
 .badge--agendado,
