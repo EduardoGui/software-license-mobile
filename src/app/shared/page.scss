@@ -240,8 +240,10 @@ textarea {
 .badge--ativo,
 .badge--emuso,
 .badge--aprovado,
+.badge--aprovada,
 .badge--recebida,
-.badge--confirmado {
+.badge--confirmado,
+.badge--concluida {
   background: #dcfce7;
   color: #15803d;
 }
@@ -253,14 +255,17 @@ textarea {
 
 .badge--agendado,
 .badge--enviadoparaaprovacao,
-.badge--enviada {
+.badge--enviada,
+.badge--solicitada,
+.badge--emgozo {
   background: #fef9c3;
   color: #a16207;
 }
 
 .badge--inativo,
 .badge--encerrado,
-.badge--rascunho {
+.badge--rascunho,
+.badge--cancelada {
   background: var(--color-bg-subtle);
   color: var(--color-secondary);
 }
@@ -270,7 +275,8 @@ textarea {
   color: #c2410c;
 }
 
-.badge--reprovado {
+.badge--reprovado,
+.badge--reprovada {
   background: #fee2e2;
   color: #b91c1c;
 }
