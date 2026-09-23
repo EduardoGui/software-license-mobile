@@ -10,17 +10,35 @@
     <p class="status status--erro">Não foi possível identificar seu usuário.</p>
   } @else if (erro()) {
     <p class="status status--erro">Não foi possível carregar suas férias.</p>
-  } @else if (programacoes().length === 0) {
-    <p class="status">Nenhuma programação de férias ainda.</p>
   } @else {
-    <div class="lista">
-      @for (programacao of programacoes(); track programacao.id) {
-        <div class="cartao-item">
-          <span class="cartao-item__titulo">{{ programacao.dataInicio | dataBr }} a {{ programacao.dataFim | dataBr }}</span>
-          <span class="cartao-item__detalhe">{{ programacao.quantidadeDias }} dia(s)</span>
-          <span class="badge" [class]="'badge--' + programacao.statusEfetivo.toLowerCase()">{{ rotuloStatus(programacao) }}</span>
-        </div>
-      }
-    </div>
+    @if (periodo(); as p) {
+      <p class="subtitulo">Saldo disponível: {{ p.saldoDisponivel }} dia(s)</p>
+    }
+
+    <a routerLink="/minhas-ferias/nova" class="botao botao--primario cartao-item__acao">+ Solicitar férias</a>
+
+    @if (programacoes().length === 0) {
+      <p class="status">Nenhuma programação de férias ainda.</p>
+    } @else {
+      <div class="lista">
+        @for (programacao of programacoes(); track programacao.id) {
+          <div class="cartao-item">
+            <span class="cartao-item__titulo">{{ programacao.dataInicio | dataBr }} a {{ programacao.dataFim | dataBr }}</span>
+            <span class="cartao-item__detalhe">{{ programacao.quantidadeDias }} dia(s)</span>
+            <span class="badge" [class]="'badge--' + programacao.statusEfetivo.toLowerCase()">{{ rotuloStatus(programacao) }}</span>
+            @if (podeCancelar(programacao)) {
+              <button
+                type="button"
+                class="botao botao--texto cartao-item__acao"
+                [disabled]="cancelandoId() === programacao.id"
+                (click)="cancelar(programacao)"
+              >
+                {{ cancelandoId() === programacao.id ? 'Cancelando...' : 'Cancelar' }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
   }
 </section>

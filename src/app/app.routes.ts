@@ -15,6 +15,7 @@ import { ReembolsosAprovadosList } from './features/reembolsos/reembolsos-aprova
 import { NotasDebitoPjList } from './features/notas-debito-pj/notas-debito-pj-list';
 import { NotaDebitoPjDetalhe } from './features/notas-debito-pj/nota-debito-pj-detalhe';
 import { MinhasFeriasList } from './features/ferias/minhas-ferias-list';
+import { SolicitarFerias } from './features/ferias/solicitar-ferias';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -33,5 +34,6 @@ export const routes: Routes = [
   { path: 'notas-debito-pj', component: NotasDebitoPjList, canActivate: [authGuard] },
   { path: 'notas-debito-pj/:id', component: NotaDebitoPjDetalhe, canActivate: [authGuard] },
   { path: 'minhas-ferias', component: MinhasFeriasList, canActivate: [authGuard] },
+  { path: 'minhas-ferias/nova', component: SolicitarFerias, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
 ];
