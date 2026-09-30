@@ -78,6 +78,10 @@
       </div>
     }
 
+    <h2>Anexos</h2>
+    <p class="dica">Ex.: Termo de Responsabilidade (versão assinada) dos equipamentos em uso.</p>
+    <app-anexos-secao recurso="usuarios" [entidadeId]="usuario()!.id" [somenteLeitura]="true" />
+
     @if (!carregandoHistorico() && historicoEntregas().length > 0) {
       <button type="button" class="secao-cabecalho secao-cabecalho--botao" (click)="alternarHistorico()">
         <h2>Histórico de recebimentos</h2>

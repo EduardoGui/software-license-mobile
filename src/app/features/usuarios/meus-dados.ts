@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../auth/auth.service';
+import { AnexosSecao } from '../../shared/anexos/anexos-secao';
 import { DataBrPipe } from '../../shared/pipes/data-br.pipe';
 import { EquipamentoAlocacao } from '../equipamento-alocacoes/equipamento-alocacao';
 import { EquipamentoAlocacaoService } from '../equipamento-alocacoes/equipamento-alocacao.service';
@@ -14,7 +15,7 @@ import { UsuarioService } from './usuario.service';
 
 @Component({
   selector: 'app-meus-dados',
-  imports: [RouterLink, DataBrPipe],
+  imports: [RouterLink, DataBrPipe, AnexosSecao],
   templateUrl: './meus-dados.html',
   styleUrl: '../../shared/page.scss',
 })
