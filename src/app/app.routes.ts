@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 
 import { authGuard } from './core/auth-guard';
 import { Login } from './features/auth/login';
+import { EsqueciSenha } from './features/auth/esqueci-senha';
+import { AlterarSenha } from './features/auth/alterar-senha';
 import { Dashboard } from './features/dashboard/dashboard';
 import { MeusDados } from './features/usuarios/meus-dados';
 import { MeusDadosEditar } from './features/usuarios/meus-dados-editar';
@@ -19,6 +21,8 @@ import { SolicitarFerias } from './features/ferias/solicitar-ferias';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
+  { path: 'esqueci-senha', component: EsqueciSenha },
+  { path: 'alterar-senha', component: AlterarSenha, canActivate: [authGuard] },
   { path: '', component: Dashboard, canActivate: [authGuard] },
   { path: 'meus-dados', component: MeusDados, canActivate: [authGuard] },
   { path: 'meus-dados/editar', component: MeusDadosEditar, canActivate: [authGuard] },
