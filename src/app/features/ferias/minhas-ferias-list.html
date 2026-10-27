@@ -17,28 +17,58 @@
 
     <a routerLink="/minhas-ferias/nova" class="botao botao--primario cartao-item__acao">+ Solicitar férias</a>
 
-    @if (programacoes().length === 0) {
-      <p class="status">Nenhuma programação de férias ainda.</p>
+    @if (proximos().length === 0 && historico().length === 0) {
+      <p class="status">Nenhuma férias ou recesso ainda.</p>
     } @else {
-      <div class="lista">
-        @for (programacao of programacoes(); track programacao.id) {
-          <div class="cartao-item">
-            <span class="cartao-item__titulo">{{ programacao.dataInicio | dataBr }} a {{ programacao.dataFim | dataBr }}</span>
-            <span class="cartao-item__detalhe">{{ programacao.quantidadeDias }} dia(s)</span>
-            <span class="badge" [class]="'badge--' + programacao.statusEfetivo.toLowerCase()">{{ rotuloStatus(programacao) }}</span>
-            @if (podeCancelar(programacao)) {
-              <button
-                type="button"
-                class="botao botao--texto cartao-item__acao"
-                [disabled]="cancelandoId() === programacao.id"
-                (click)="cancelar(programacao)"
-              >
-                {{ cancelandoId() === programacao.id ? 'Cancelando...' : 'Cancelar' }}
-              </button>
-            }
-          </div>
-        }
-      </div>
+      <h2>Próximas e em andamento</h2>
+      @if (proximos().length === 0) {
+        <p class="status">Nada programado no momento.</p>
+      } @else {
+        <div class="lista">
+          @for (item of proximos(); track item.chave) {
+            <ng-container [ngTemplateOutlet]="cartao" [ngTemplateOutletContext]="{ $implicit: item }" />
+          }
+        </div>
+      }
+
+      <h2>Histórico (últimos 2 anos)</h2>
+      @if (historico().length === 0) {
+        <p class="status">Nenhum registro nos últimos 2 anos.</p>
+      } @else {
+        <div class="lista">
+          @for (item of historico(); track item.chave) {
+            <ng-container [ngTemplateOutlet]="cartao" [ngTemplateOutletContext]="{ $implicit: item }" />
+          }
+        </div>
+      }
     }
   }
 </section>
+
+<ng-template #cartao let-item>
+  @if (item.recesso; as recesso) {
+    <div class="cartao-item">
+      <span class="cartao-item__titulo">{{ recesso.dataInicio | dataBr }} a {{ recesso.dataFim | dataBr }}</span>
+      <span class="cartao-item__detalhe">Recesso coletivo: {{ recesso.nome }}</span>
+      <span class="cartao-item__detalhe">{{ recesso.diasCorridos }} dia(s) corridos, {{ recesso.diasAbatidos }} dia(s) descontado(s) do saldo</span>
+      <span class="badge" [class]="'badge--' + recesso.situacao.toLowerCase()">{{ rotuloSituacaoRecesso(recesso) }}</span>
+    </div>
+  } @else if (item.programacao; as programacao) {
+    <div class="cartao-item">
+      <span class="cartao-item__titulo">{{ programacao.dataInicio | dataBr }} a {{ programacao.dataFim | dataBr }}</span>
+      <span class="cartao-item__detalhe">Férias: {{ programacao.quantidadeDias }} dia(s)</span>
+      <span class="badge" [class]="'badge--' + programacao.statusEfetivo.toLowerCase()">{{ rotuloStatus(programacao) }}</span>
+      @if (podeCancelar(programacao)) {
+        <button
+          type="button"
+          class="botao botao--texto cartao-item__acao"
+          [disabled]="cancelandoId() === programacao.id"
+          (click)="cancelar(programacao)"
+        >
+          {{ cancelandoId() === programacao.id ? 'Cancelando...' : 'Cancelar' }}
+        </button>
+      }
+    </div>
+  }
+</ng-template>
+

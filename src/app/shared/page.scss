@@ -255,7 +255,8 @@ textarea {
 .badge--aprovada,
 .badge--recebida,
 .badge--confirmado,
-.badge--concluida {
+.badge--concluida,
+.badge--concluido {
   background: #dcfce7;
   color: #15803d;
 }
@@ -269,7 +270,9 @@ textarea {
 .badge--enviadoparaaprovacao,
 .badge--enviada,
 .badge--solicitada,
-.badge--emgozo {
+.badge--emgozo,
+.badge--emandamento,
+.badge--programado {
   background: #fef9c3;
   color: #a16207;
 }
